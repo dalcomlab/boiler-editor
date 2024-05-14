@@ -20,16 +20,22 @@ export class DefaultMouseEventHandler extends MouseEventHandler {
     }
 
     onMouseDown(e) {
-        e.downPoint.x = e.offsetX;
-        e.downPoint.y = e.offsetY;
-        super.onMouseDown(e);
+        e.downPoint.x = e.point.x;
+        e.downPoint.y = e.point.y;
+        this.handlers.forEach(h => {
+            h.onMouseDown(e);
+        });
     }
 
     onMouseMove(e) {
-        super.onMouseMove(e);
+        this.handlers.forEach(h => {
+            h.onMouseMove(e);
+        });
     }
 
     onMouseUp(e) {
-        super.onMouseUp(e);
+        this.handlers.forEach(h => {
+            h.onMouseUp(e);
+        });
     }
 }

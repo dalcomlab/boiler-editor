@@ -1,5 +1,6 @@
 import {MouseEventManager} from "./event/MouseEventManager.js";
 import {Page} from "./Page.js";
+import {Menu} from "./Menu.js";
 
 export class Editor {
     constructor({width, height}) {
@@ -18,6 +19,19 @@ export class Editor {
         this.ctx = this.canvas.getContext('2d');
         this.page = new Page(this.ctx);
         this.eventManager = new MouseEventManager(this);
+        this.menu = new Menu(this.eventManager);
         this.page.render();
+
+        this.canvas.addEventListener('mousedown', (e)=> {
+            this.eventManager.onMouseDown(e);
+        });
+
+        this.canvas.addEventListener('mousemove', (e)=> {
+            this.eventManager.onMouseMove(e);
+        });
+
+        this.canvas.addEventListener('mouseup', (e)=> {
+            this.eventManager.onMouseUp(e);
+        });
     }
 }

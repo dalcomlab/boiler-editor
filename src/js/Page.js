@@ -36,6 +36,8 @@ export class Page {
     }
 
     renderBackground() {
+        this.renderGrid();
+
         const painter = this.painter;
         painter.line({x: 0, y: 0}, {x: 50, y: 50});
     }
@@ -48,17 +50,45 @@ export class Page {
         const width = this.ctx.canvas.width;
         const height = this.ctx.canvas.height;
 
-
+        this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
+        this.renderGridLine(sX, sY, height, true);
+        this.renderGridLine(sY, sX, width, false);
     }
 
-    renderGridLine(sP, eP, lineLength) {
+    renderGridLine(sP, sP1, lineLength, isVertical) {
         const gridSize = this.gridSize;
         const gridCount = this.gridCount;
 
-        // let gridNum = 1;
-        for (let i = sP; i < sP + width; i += gridSize) {
-            // ++gridNum;
-            this.painter.line({x: sP, y: 0}, {x: })
+        let gridNum = 0;
+        const lineCount = lineLength / gridSize;
+        for (let i = 0; i <= lineCount; ++i) {
+            const p = i * gridSize + sP;
+
+            const gridLineCheck = gridNum++ % gridCount === 0;
+            const color = gridLineCheck ? 'rgba(0, 0, 0, 0.6)' : 'rgb(129, 138, 138)';
+            const width = gridLineCheck ? 2 : 1;
+            const line = this.getLinePoint({x: p, y: sP1}, {x: p, y: sP1 + lineLength}, isVertical);
+            this.painter.line(line.p1, line.p2, color, width);
         }
+    }
+
+    getLinePoint(p1, p2, isVertical) {
+        if (isVertical) {
+            return {p1, p2};
+        }
+
+        return {p1: {x: p1.y, y: p1.x}, p2: {x: p2.y, y: p2.x}};
+    }
+
+    transform() {
+        const wayPoint = this.coordinate.wayPoint;
+        const dpr = this.coordinate.dpr;
+
+        const orgWayPoint = {
+            x: wayPoint.x * dpr,
+            y: wayPoint.y * dpr
+        }
+
+        this.ctx.setTransform(dpr, 0, 0, dpr, orgWayPoint.x, orgWayPoint.y);
     }
 }

@@ -3,7 +3,8 @@ export class CommandExecutor {
         this.command = null;
     }
     execute(command) {
-        command?.deActive();
+        this.command?.deActive();
         this.command = command;
+        this.command.active();
     }
 }

@@ -2,10 +2,6 @@ import {MouseEventHandler} from "./MouseEventHandler.js";
 import {EventType} from "./EventType.js";
 
 export class PageMouseEventHandler extends MouseEventHandler {
-    constructor(page) {
-        super();
-        this._page = page;
-    }
 
     get type() {
         return EventType.PAGE;
@@ -15,9 +11,28 @@ export class PageMouseEventHandler extends MouseEventHandler {
     }
 
     onMouseDown(e) {
+
     }
 
     onMouseMove(e) {
+        if (!e.down) {
+            return;
+        }
+
+        const downPoint = e.downPoint;
+        const mx = downPoint.x - e.point.x;
+        const my = downPoint.y - e.point.y;
+
+        e.downPoint.x = e.point.x;
+        e.downPoint.y = e.point.y;
+
+        const page = e.editor.page;
+        const coordinate = page.coordinate;
+        coordinate.wayPoint.x += mx;
+        coordinate.wayPoint.y += my;
+
+        page.transform();
+        page.render();
     }
 
     onMouseUp(e) {

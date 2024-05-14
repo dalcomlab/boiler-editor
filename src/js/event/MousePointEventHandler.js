@@ -25,7 +25,7 @@ export class MousePointEventHandler extends MouseEventHandler {
 
     #setEvent(e) {
         const originEvent = e.originEvent;
-        const coordinate = e.editor.coordinate;
+        const coordinate = e.editor.page.coordinate;
         e.point.x = originEvent.offsetX / coordinate.dpr;
         e.point.y = originEvent.offsetY / coordinate.dpr;
     }
