@@ -44,31 +44,38 @@ export class Page {
 
     renderGrid() {
         const coordinate = this.coordinate;
-        const sX = coordinate.wayPoint.x;
-        const sY = coordinate.wayPoint.y;
+        const width = this.ctx.canvas.width / coordinate.dpr;
+        const height = this.ctx.canvas.height / coordinate.dpr;
 
-        const width = this.ctx.canvas.width;
-        const height = this.ctx.canvas.height;
+        const sX = -coordinate.wayPoint.x;
+        const eX = sX + width;
+        const sY = -coordinate.wayPoint.y;
+        const eY = sY + height;
 
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
-        this.renderGridLine(sX, sY, height, true);
-        this.renderGridLine(sY, sX, width, false);
+        this.renderGridLine(sX, eX, sY, eY, true);
+        this.renderGridLine(sY, eY, sX, eX, false);
     }
 
-    renderGridLine(sP, sP1, lineLength, isVertical) {
+    renderGridLine(sP, eP, sP1, eP1, isVertical) {
         const gridSize = this.gridSize;
-        const gridCount = this.gridCount;
+        let rX = sP % gridSize;
+        let gridIdx = Math.floor(sP/gridSize);
 
-        let gridNum = 0;
-        const lineCount = lineLength / gridSize;
-        for (let i = 0; i <= lineCount; ++i) {
-            const p = i * gridSize + sP;
+        if (rX !== 0) {
+            gridIdx = sP < 0 ? gridIdx-1 : gridIdx+1;
+            sP = (gridIdx) * gridSize;
+        }
 
-            const gridLineCheck = gridNum++ % gridCount === 0;
-            const color = gridLineCheck ? 'rgba(0, 0, 0, 0.6)' : 'rgb(129, 138, 138)';
-            const width = gridLineCheck ? 2 : 1;
-            const line = this.getLinePoint({x: p, y: sP1}, {x: p, y: sP1 + lineLength}, isVertical);
-            this.painter.line(line.p1, line.p2, color, width);
+        for (let i = sP; i < eP;) {
+            const lineWidth = (gridIdx % this.gridCount) === 0 ? 2 : 1;
+            const color = (gridIdx % this.gridCount) === 0 ?
+                'rgba(0, 0, 0, 0.6)' :
+                'rgb(129, 138, 138)';
+            isVertical ? this.painter.line({x: i, y:sP1}, {x: i, y: eP1}, color, lineWidth) :
+                this.painter.line({x: sP1, y: i}, {x: eP1, y: i}, color, lineWidth);
+            i += gridSize;
+            ++gridIdx;
         }
     }
 
@@ -87,7 +94,7 @@ export class Page {
         const orgWayPoint = {
             x: wayPoint.x * dpr,
             y: wayPoint.y * dpr
-        }
+        };
 
         this.ctx.setTransform(dpr, 0, 0, dpr, orgWayPoint.x, orgWayPoint.y);
     }

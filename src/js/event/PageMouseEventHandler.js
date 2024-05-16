@@ -20,8 +20,8 @@ export class PageMouseEventHandler extends MouseEventHandler {
         }
 
         const downPoint = e.downPoint;
-        const mx = downPoint.x - e.point.x;
-        const my = downPoint.y - e.point.y;
+        const mx = e.point.x - downPoint.x;
+        const my = e.point.y - downPoint.y;
 
         e.downPoint.x = e.point.x;
         e.downPoint.y = e.point.y;

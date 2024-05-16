@@ -13,6 +13,8 @@ export class MousePointEventHandler extends MouseEventHandler {
 
     onMouseDown(e) {
         this.#setEvent(e);
+        e.downPoint.x = e.point.x;
+        e.downPoint.y = e.point.y;
     }
 
     onMouseMove(e) {

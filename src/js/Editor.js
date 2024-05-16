@@ -5,6 +5,7 @@ import {Menu} from "./Menu.js";
 export class Editor {
     constructor({width, height}) {
         this.canvas = document.createElement('canvas');
+        this.canvas.style.border = 'solid 2px #000';
         this.canvas.width = width;
         this.canvas.height = height;
 
