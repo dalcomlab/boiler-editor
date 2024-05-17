@@ -1,7 +1,7 @@
-import {MouseEventHandler} from "./MouseEventHandler.js";
+import {EventHandler} from "./EventHandler.js";
 import {EventType} from "./EventType.js";
 
-export class MousePointEventHandler extends MouseEventHandler {
+export class PointEventHandler extends EventHandler {
     constructor() {
         super();
     }

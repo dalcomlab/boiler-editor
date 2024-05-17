@@ -1,10 +1,11 @@
-import {MouseEventHandler} from "./MouseEventHandler.js";
+import {EventHandler} from "./EventHandler.js";
 import {EventType} from "./EventType.js";
 import {Polygon} from "../editor/control/Polygon.js";
 import {CreatePolygonCreateRender} from "../editor/render/CreatePolygonCreateRender.js";
 import {PointUtil} from "../util/PointUtil.js";
+import {UndoItem} from "../../undo/UndoItem.js";
 
-export class CreatePolygonEventHandler extends MouseEventHandler {
+export class CreatePolygonEventHandler extends EventHandler {
     constructor() {
         super();
         this.polygon = null;
@@ -44,9 +45,24 @@ export class CreatePolygonEventHandler extends MouseEventHandler {
             // this.polygon.update();
             e.editor.page.addControl(this.polygon);
             e.editor.removeForegroundRender();
-            e.editor.render();
+            const polygon = this.polygon;
+            e.editor.undoManager.addUndo(new UndoItem(
+                () => {e.editor.page.removeControl(polygon)},
+                () => {e.editor.page.addControl(polygon)}));
             this.polygon = null;
         }
+    }
+
+    onKeyDown(e) {
+        if (e.originEvent.key === 'Escape' || e.originEvent.key === 'Esc') {
+            this.cancel(e);
+            e.editor.render();
+        }
+    }
+
+    cancel(e) {
+        this.polygon = null;
+        e.editor.removeForegroundRender();
     }
 
     checkClosePolygon() {

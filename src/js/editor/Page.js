@@ -12,6 +12,7 @@ export class Page {
         this.gridCount = 5;
 
         this._backgroundImg = null;
+        this.gridRender = true;
     }
 
 
@@ -33,6 +34,14 @@ export class Page {
 
     addControl(control) {
         this.controls.push(control);
+        this.render();
+    }
+
+    removeControl(control) {
+        this._controls = this.controls.filter(element => {
+            return element !== control;
+        });
+        this.render();
     }
 
     render() {
@@ -40,6 +49,12 @@ export class Page {
         this._controls.forEach(control => {
             control.render(this.painter);
         });
+    }
+
+    captureRender() {
+        this.gridRender = false;
+        this.render();
+        this.gridRender = true;
     }
 
     renderBackground() {
@@ -65,6 +80,10 @@ export class Page {
 
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
         this.renderBackgroundImage(sX, sY, width, height);
+
+        if (!this.gridRender) {
+            return;
+        }
         this.renderGridLine(sX, eX, sY, eY, true);
         this.renderGridLine(sY, eY, sX, eX, false);
     }
@@ -85,7 +104,7 @@ export class Page {
                 'rgba(0, 0, 0, 0.6)' :
                 'rgb(129, 138, 138)';
             const line = this.getLinePoint({x: i, y:sP1}, {x: i, y: eP1}, isVertical);
-            this.painter.line(line.p1, line.p2, color, lineWidth);
+            this.painter.line(line.p1, line.p2, color, lineWidth, 0.5);
             i += gridSize;
             ++gridIdx;
         }

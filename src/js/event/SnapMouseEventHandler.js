@@ -1,7 +1,7 @@
-import {MouseEventHandler} from "./MouseEventHandler.js";
+import {EventHandler} from "./EventHandler.js";
 import {EventType} from "./EventType.js";
 
-export class SnapMouseEventHandler extends MouseEventHandler {
+export class SnapMouseEventHandler extends EventHandler {
 
     get type() {
         return EventType.SNAP;

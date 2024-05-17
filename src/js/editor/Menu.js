@@ -10,7 +10,6 @@ export class Menu {
         };
 
         this.createPolygon = () => {
-            console.log('execute');
             this.commandExecutor.execute(new CreatePolygonCommand(manager));
         };
     }

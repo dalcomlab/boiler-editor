@@ -1,10 +1,14 @@
 import {Event} from './Event.js'
-import {MousePointEventHandler} from "./MousePointEventHandler.js";
-export class MouseEventManager {
+import {PointEventHandler} from "./PointEventHandler.js";
+import {UndoEventHandler} from "./UndoEventHandler.js";
+import {DefaultEventHandler} from "./DefaultEventHandler.js";
+export class EventManager {
     constructor(editor) {
         this.event = new Event(editor);
         this.handlers = new Map();
-        this.addHandler(new MousePointEventHandler());
+        this.addHandler(new PointEventHandler());
+        this.addHandler(new DefaultEventHandler());
+        this.addHandler(new UndoEventHandler(editor.undoManager));
     }
 
     addHandler(handler) {
@@ -33,6 +37,20 @@ export class MouseEventManager {
         this.#setEvent(e);
         this.handlers.forEach(h => {
             h.onMouseUp(this.event);
+        });
+    }
+
+    onKeyDown(e) {
+        this.#setEvent(e);
+        this.handlers.forEach(h => {
+            h.onKeyDown(this.event);
+        });
+    }
+
+    onKeyUp(e) {
+        this.#setEvent(e);
+        this.handlers.forEach(h => {
+            h.onKeyUp(this.event);
         });
     }
 

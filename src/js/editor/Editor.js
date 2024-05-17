@@ -1,6 +1,7 @@
-import {MouseEventManager} from "../event/MouseEventManager.js";
+import {EventManager} from "../event/EventManager.js";
 import {Page} from "./Page.js";
 import {Menu} from "./Menu.js";
+import {UndoManager} from "../../undo/UndoManager.js";
 
 export class Editor {
     constructor({width, height}) {
@@ -10,6 +11,8 @@ export class Editor {
         this.canvas.height = height;
 
         this.foregroundRender = null;
+
+        this._undoManager = new UndoManager();
 
         this.#init();
     }
@@ -21,7 +24,7 @@ export class Editor {
 
         this.ctx = this.canvas.getContext('2d');
         this.page = new Page(this.ctx);
-        this.eventManager = new MouseEventManager(this);
+        this.eventManager = new EventManager(this);
         this.menu = new Menu(this.eventManager);
         this.page.render();
 
@@ -37,6 +40,14 @@ export class Editor {
             this.eventManager.onMouseUp(e);
         });
 
+        document.addEventListener('keydown', (e) => {
+            this.eventManager.onKeyDown(e);
+        });
+
+        document.addEventListener('keyup', (e) => {
+            this.eventManager.onKeyUp(e);
+        });
+
         root.ondrop = (e)=> {
             e.preventDefault();
             let file = e.dataTransfer.files[0];
@@ -48,7 +59,6 @@ export class Editor {
 
                     this.render();
                 };
-                console.log(e.target.result);
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
@@ -59,7 +69,20 @@ export class Editor {
         };
     }
 
+    capture() {
+        this.#captureRender();
+        const dataURL = this.canvas.toDataURL("image/png");
 
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'canvas_image.png';
+        link.click();
+        this.render();
+    }
+
+    #captureRender() {
+        this.page.captureRender();
+    }
 
     addForegroundRender(render) {
         this.foregroundRender = render;
@@ -72,5 +95,9 @@ export class Editor {
     render() {
         this.page.render();
         this.foregroundRender?.render(this.page.painter);
+    }
+
+    get undoManager() {
+        return this._undoManager;
     }
 }

@@ -6,7 +6,7 @@ export class Polygon extends Control {
         this._points = [];
         this._fillColor = 'none';
         this._lineColor = 'rgb(53,155,255)';
-        this._lineWidth = 1;
+        this._lineWidth = 3;
         this._opacity = 1;
     }
 
