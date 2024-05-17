@@ -15,13 +15,6 @@ export class MouseEventManager {
         this.handlers.delete(handler.type);
     }
 
-    onMouseClick(e) {
-        this.#setEvent(e);
-        this.handlers.forEach(h => {
-            h.onMouseClick(this.event);
-        });
-    }
-
     onMouseDown(e) {
         this.#setEvent(e);
         this.handlers.forEach(h => {

@@ -7,9 +7,6 @@ export class SnapMouseEventHandler extends MouseEventHandler {
         return EventType.SNAP;
     }
 
-    onMouseClick(e) {
-    }
-
     onMouseDown(e) {
         e.down = true;
     }

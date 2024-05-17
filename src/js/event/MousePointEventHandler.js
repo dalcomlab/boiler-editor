@@ -2,13 +2,12 @@ import {MouseEventHandler} from "./MouseEventHandler.js";
 import {EventType} from "./EventType.js";
 
 export class MousePointEventHandler extends MouseEventHandler {
+    constructor() {
+        super();
+    }
 
     get type() {
         return EventType.MOUSE_POINT;
-    }
-
-    onMouseClick(e) {
-        this.#setEvent(e);
     }
 
     onMouseDown(e) {
@@ -30,5 +29,7 @@ export class MousePointEventHandler extends MouseEventHandler {
         const coordinate = e.editor.page.coordinate;
         e.point.x = originEvent.offsetX / coordinate.dpr;
         e.point.y = originEvent.offsetY / coordinate.dpr;
+        e.curPoint.x = e.point.x - coordinate.wayPoint.x;
+        e.curPoint.y = e.point.y - coordinate.wayPoint.y;
     }
 }

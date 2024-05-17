@@ -7,9 +7,6 @@ export class PageMouseEventHandler extends MouseEventHandler {
         return EventType.PAGE;
     }
 
-    onMouseClick(e) {
-    }
-
     onMouseDown(e) {
 
     }

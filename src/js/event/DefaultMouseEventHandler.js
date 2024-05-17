@@ -15,10 +15,6 @@ export class DefaultMouseEventHandler extends MouseEventHandler {
         return EventType.DEFAULT;
     }
 
-    onMouseClick(e) {
-        super.onMouseClick(e);
-    }
-
     onMouseDown(e) {
         this.handlers.forEach(h => {
             h.onMouseDown(e);

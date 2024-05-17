@@ -9,7 +9,6 @@ export class PageDragCommand extends Command {
     }
 
     active() {
-        console.log('active');
         this.eventManager.addHandler(this.handler);
     }
 

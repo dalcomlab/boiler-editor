@@ -1,4 +1,4 @@
-import {MouseEventManager} from "./event/MouseEventManager.js";
+import {MouseEventManager} from "../event/MouseEventManager.js";
 import {Page} from "./Page.js";
 import {Menu} from "./Menu.js";
 
@@ -8,6 +8,8 @@ export class Editor {
         this.canvas.style.border = 'solid 2px #000';
         this.canvas.width = width;
         this.canvas.height = height;
+
+        this.foregroundRender = null;
 
         this.#init();
     }
@@ -34,5 +36,41 @@ export class Editor {
         this.canvas.addEventListener('mouseup', (e)=> {
             this.eventManager.onMouseUp(e);
         });
+
+        root.ondrop = (e)=> {
+            e.preventDefault();
+            let file = e.dataTransfer.files[0];
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                let img = new Image();
+                img.onload = (e) => {
+                    this.page.backgroundImg = img;
+
+                    this.render();
+                };
+                console.log(e.target.result);
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        root.ondragover = (e) => {
+            e.preventDefault();
+        };
+    }
+
+
+
+    addForegroundRender(render) {
+        this.foregroundRender = render;
+    }
+
+    removeForegroundRender() {
+        this.foregroundRender = null;
+    }
+
+    render() {
+        this.page.render();
+        this.foregroundRender?.render(this.page.painter);
     }
 }

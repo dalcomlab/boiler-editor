@@ -6,14 +6,21 @@ export class Page {
         this.ctx = ctx;
         this._painter = new Painter(ctx);
         this._coordinate = new Coordinate();
-        this._shapes = [];
+        this._controls = [];
 
         this.gridSize = 25;
         this.gridCount = 5;
+
+        this._backgroundImg = null;
     }
 
-    get shapes() {
-        return this._shapes;
+
+    set backgroundImg(img) {
+        this._backgroundImg = img;
+    }
+
+    get controls() {
+        return this._controls;
     }
 
     get painter() {
@@ -24,22 +31,26 @@ export class Page {
         return this._coordinate;
     }
 
-    addShape(shape) {
-        this.shapes.push(shape);
+    addControl(control) {
+        this.controls.push(control);
     }
 
     render() {
         this.renderBackground();
-        this._shapes.forEach(s => {
-            s.render();
+        this._controls.forEach(control => {
+            control.render(this.painter);
         });
     }
 
     renderBackground() {
         this.renderGrid();
+    }
 
-        const painter = this.painter;
-        painter.line({x: 0, y: 0}, {x: 50, y: 50});
+    renderBackgroundImage(x, y, w, h) {
+        if (this._backgroundImg === null) {
+            return;
+        }
+        this.painter.drawImage(this._backgroundImg, x, y, w, h);
     }
 
     renderGrid() {
@@ -53,6 +64,7 @@ export class Page {
         const eY = sY + height;
 
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
+        this.renderBackgroundImage(sX, sY, width, height);
         this.renderGridLine(sX, eX, sY, eY, true);
         this.renderGridLine(sY, eY, sX, eX, false);
     }
@@ -72,8 +84,8 @@ export class Page {
             const color = (gridIdx % this.gridCount) === 0 ?
                 'rgba(0, 0, 0, 0.6)' :
                 'rgb(129, 138, 138)';
-            isVertical ? this.painter.line({x: i, y:sP1}, {x: i, y: eP1}, color, lineWidth) :
-                this.painter.line({x: sP1, y: i}, {x: eP1, y: i}, color, lineWidth);
+            const line = this.getLinePoint({x: i, y:sP1}, {x: i, y: eP1}, isVertical);
+            this.painter.line(line.p1, line.p2, color, lineWidth);
             i += gridSize;
             ++gridIdx;
         }
