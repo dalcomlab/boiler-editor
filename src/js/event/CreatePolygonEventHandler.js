@@ -35,11 +35,11 @@ export class CreatePolygonEventHandler extends EventHandler {
         }
         e.editor.render();
 
-        e.editor.page.painter.line(points[pointsLen-1], e.curPoint);
+        e.editor.page.painter.line(points[pointsLen-1], e.point);
     }
 
     onMouseUp(e) {
-        const p = e.curPoint;
+        const p = e.point;
         this.polygon.points.push({x: p.x, y: p.y});
         if (this.checkClosePolygon()) {
             // this.polygon.update();

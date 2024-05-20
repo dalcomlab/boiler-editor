@@ -8,6 +8,8 @@ export class EventHandler {
     onMouseMove(e) {}
     onMouseUp(e) {}
 
+    onMouseWheel(e) {}
+
     onKeyDown(e) {}
     onKeyUp(e) {}
 }
