@@ -1,11 +1,11 @@
 import {Command} from "./Command.js";
-import {DefaultEventHandler} from "../event/DefaultEventHandler.js";
+import {PageEventHandler} from "../event/PageEventHandler.js";
 
 export class PageDragCommand extends Command {
     constructor(eventManager) {
         super();
         this.eventManager = eventManager;
-        this.handler = new DefaultEventHandler();
+        this.handler = new PageEventHandler();
     }
 
     active() {

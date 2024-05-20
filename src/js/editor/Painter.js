@@ -34,14 +34,15 @@ export class Painter {
         ctx.closePath();
 
         ctx.save();
-        ctx.globalAlpha = polygon.opacity;
         ctx.lineWidth = polygon.lineWidth;
 
         if (polygon.fillColor !== 'none') {
+            ctx.globalAlpha = polygon.opacity;
             ctx.fillStyle = polygon.fillColor;
             ctx.fill();
         }
 
+        ctx.globalAlpha = 1;
         ctx.strokeStyle = polygon.lineColor;
         ctx.stroke();
         ctx.restore();

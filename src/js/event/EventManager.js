@@ -1,13 +1,14 @@
 import {Event} from './Event.js'
 import {PointEventHandler} from "./PointEventHandler.js";
 import {UndoEventHandler} from "./UndoEventHandler.js";
-import {DefaultEventHandler} from "./DefaultEventHandler.js";
+import {SnapMouseEventHandler} from "./SnapMouseEventHandler.js";
+
 export class EventManager {
     constructor(editor) {
         this.event = new Event(editor);
         this.handlers = new Map();
         this.addHandler(new PointEventHandler());
-        this.addHandler(new DefaultEventHandler());
+        this.addHandler(new SnapMouseEventHandler());
         this.addHandler(new UndoEventHandler(editor.undoManager));
     }
 

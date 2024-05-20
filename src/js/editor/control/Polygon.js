@@ -4,10 +4,10 @@ export class Polygon extends Control {
     constructor() {
         super();
         this._points = [];
-        this._fillColor = 'none';
-        this._lineColor = 'rgb(53,155,255)';
-        this._lineWidth = 3;
-        this._opacity = 1;
+        this._fillColor = 'rgb(0,255,5)';
+        this._lineColor = 'rgb(0,255,5)';
+        this._lineWidth = 7;
+        this._opacity = 0.2;
     }
 
     get points() {

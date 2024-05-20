@@ -1,7 +1,7 @@
 import {Editor} from "./editor/Editor.js";
 
 export function init() {
-    const editor = new Editor({width: 1500, height: 1500});
+    const editor = new Editor({width: 1000, height: 1000});
 
     const pageDragBtn = createButton('page drag', (e)=> {editor.menu.pageDrag()});
     const polygonBtn = createButton('polygon', (e) => {editor.menu.createPolygon()});
