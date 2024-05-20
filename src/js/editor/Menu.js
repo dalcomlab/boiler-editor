@@ -12,9 +12,7 @@ export class Menu {
         this.createPolygon = () => {
             this.commandExecutor.execute(new CreatePolygonCommand(manager));
         };
-    }
 
-    // get pageDrag() {
-    //     return this._pageDrag;
-    // }
+        this.commandExecutor.execute(new PageDragCommand(manager));
+    }
 }
