@@ -79,7 +79,7 @@ export class Page {
         const eY = sY + height;
 
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
-        this.renderBackgroundImage(sX, sY, width, height);
+        this.renderBackgroundImage(-1, -1, this.ctx.canvas.width+2, this.ctx.canvas.height+2);
 
         if (!this.gridRender) {
             return;
