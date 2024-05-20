@@ -15,6 +15,9 @@ export class PageEventHandler extends EventHandler {
     }
 
     onMouseMove(e) {
+        const page = e.editor.page;
+        const coordinate = page.coordinate;
+        coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
         if (!e.down) {
             return;
         }
@@ -23,11 +26,6 @@ export class PageEventHandler extends EventHandler {
         const mx = e.point.x - downPoint.x;
         const my = e.point.y - downPoint.y;
 
-        e.downPoint.x = e.point.x;
-        e.downPoint.y = e.point.y;
-
-        const page = e.editor.page;
-        const coordinate = page.coordinate;
         coordinate.wayPoint.x += mx;
         coordinate.wayPoint.y += my;
 
@@ -36,5 +34,12 @@ export class PageEventHandler extends EventHandler {
     }
 
     onMouseUp(e) {
+
+    }
+
+    onMouseWheel(e) {
+        const page = e.editor.page;
+        e.originEvent.deltaY < 0 ? page.scaleIn() : page.scaleOut();
+        page.render();
     }
 }

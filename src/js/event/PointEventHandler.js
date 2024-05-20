@@ -25,11 +25,18 @@ export class PointEventHandler extends EventHandler {
     }
 
     #setEvent(e) {
-        const originEvent = e.originEvent;
         const coordinate = e.editor.page.coordinate;
-        e.point.x = originEvent.offsetX / coordinate.dpr;
-        e.point.y = originEvent.offsetY / coordinate.dpr;
-        e.curPoint.x = e.point.x - coordinate.wayPoint.x;
-        e.curPoint.y = e.point.y - coordinate.wayPoint.y;
+        const dpr = coordinate.dpr;
+        const point = e.point;
+
+        point.x = e.originEvent.offsetX / dpr;
+        point.y = e.originEvent.offsetY / dpr;
+
+        const dprOrigin = {x: coordinate.orgPoint.x / dpr, y: coordinate.orgPoint.y / dpr};
+        const wX = -coordinate.wayPoint.x - dprOrigin.x;
+        const wY = -coordinate.wayPoint.y - dprOrigin.y;
+
+        point.x += wX;
+        point.y += wY;
     }
 }
