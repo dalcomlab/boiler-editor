@@ -50,6 +50,7 @@ export class CreatePolygonEventHandler extends EventHandler {
                 () => {e.editor.page.removeControl(polygon)},
                 () => {e.editor.page.addControl(polygon)}));
             this.polygon = null;
+            e.editor.menu.pageDrag();
         }
     }
 
