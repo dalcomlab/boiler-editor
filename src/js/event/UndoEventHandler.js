@@ -9,14 +9,11 @@ export class UndoEventHandler extends EventHandler {
 
     onKeyDown(e) {
         const key = e.originEvent.key;
-        this.keysPredded[key] = true;
-        // if (!this.keysPredded['Meta'] && !this.keysPredded['Control']) {
-        //     return;
-        // }
+        // this.keysPredded[key] = true;
 
-        if (this.keysPredded['z']) {
+        if (key === 'z') {
             this.manager.undo();
-        } else if (this.keysPredded['y']) {
+        } else if (key === 'y') {
             this.manager.redo();
         }
     }
