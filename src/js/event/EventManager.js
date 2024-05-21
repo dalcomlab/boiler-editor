@@ -48,6 +48,13 @@ export class EventManager {
         });
     }
 
+    onMouseWheel(e) {
+        this.#setEvent(e);
+        this.handlers.forEach(h => {
+            h.onMouseWheel(this.event);
+        });
+    }
+
     onKeyUp(e) {
         this.#setEvent(e);
         this.handlers.forEach(h => {

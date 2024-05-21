@@ -40,6 +40,10 @@ export class Editor {
             this.eventManager.onMouseUp(e);
         });
 
+        this.canvas.addEventListener('wheel', (e) => {
+            this.eventManager.onMouseWheel(e);
+        });
+
         document.addEventListener('keydown', (e) => {
             this.eventManager.onKeyDown(e);
         });

@@ -20,4 +20,7 @@ export class SnapMouseEventHandler extends EventHandler {
     onMouseUp(e) {
         e.down = false;
     }
+
+    onMouseWheel(e) {
+    }
 }

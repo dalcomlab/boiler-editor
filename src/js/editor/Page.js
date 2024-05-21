@@ -1,6 +1,8 @@
 import {Painter} from "./Painter.js";
 import {Coordinate} from "./Coordinate.js";
 
+const MAX_DPR = 10;
+const MIN_DPR = 0.1;
 export class Page {
     constructor(ctx) {
         this.ctx = ctx;
@@ -70,16 +72,19 @@ export class Page {
 
     renderGrid() {
         const coordinate = this.coordinate;
-        const width = this.ctx.canvas.width / coordinate.dpr;
-        const height = this.ctx.canvas.height / coordinate.dpr;
+        const dpr = coordinate.dpr;
+        const wayPoint = coordinate.wayPoint;
+        const orgPoint = coordinate.orgPoint;
+        const width = this.ctx.canvas.width / dpr;
+        const height = this.ctx.canvas.height / dpr;
 
-        const sX = -coordinate.wayPoint.x;
+        const sX = -orgPoint.x / dpr - wayPoint.x;
         const eX = sX + width;
-        const sY = -coordinate.wayPoint.y;
+        const sY = -orgPoint.y / dpr - wayPoint.y;
         const eY = sY + height;
 
         this.ctx.clearRect(sX-1, sY-1, width+2, height+2);
-        this.renderBackgroundImage(sX, sY, width, height);
+        this.renderBackgroundImage(-1, -1, this.ctx.canvas.width+2, this.ctx.canvas.height+2);
 
         if (!this.gridRender) {
             return;
@@ -118,7 +123,40 @@ export class Page {
         return {p1: {x: p1.y, y: p1.x}, p2: {x: p2.y, y: p2.x}};
     }
 
+    scaleIn() {
+        if (this._coordinate.dpr > MAX_DPR) {
+            return;
+        }
+        this.scale(1.05);
+        this.render();
+    }
+
+    scaleOut() {
+        if (this._coordinate.dpr < MIN_DPR) {
+            return;
+        }
+        this.scale(0.95);
+        this.render();
+    }
+
+    scale(dpr) {
+        const coordinate = this._coordinate;
+        coordinate.dpr *= dpr;
+
+        const oldOrigin = {
+            x: coordinate.orgPoint.x,
+            y: coordinate.orgPoint.y
+        };
+        coordinate.orgPoint = {
+            x: coordinate.curPoint.x - (coordinate.curPoint.x - oldOrigin.x) * dpr,
+            y: coordinate.curPoint.y - (coordinate.curPoint.y - oldOrigin.y) * dpr
+        };
+
+        this.transform();
+    }
+
     transform() {
+        const orgPoint = this.coordinate.orgPoint;
         const wayPoint = this.coordinate.wayPoint;
         const dpr = this.coordinate.dpr;
 
@@ -127,6 +165,6 @@ export class Page {
             y: wayPoint.y * dpr
         };
 
-        this.ctx.setTransform(dpr, 0, 0, dpr, orgWayPoint.x, orgWayPoint.y);
+        this.ctx.setTransform(dpr, 0, 0, dpr, orgPoint.x + orgWayPoint.x, orgPoint.y + orgWayPoint.y);
     }
 }
