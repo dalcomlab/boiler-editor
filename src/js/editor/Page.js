@@ -9,6 +9,9 @@ export class Page {
         this._painter = new Painter(ctx);
         this._coordinate = new Coordinate();
         this._controls = [];
+        this._selectControls = [];
+        this._selectControl = null;
+        this._hoverControl = null;
 
         this.gridSize = 25;
         this.gridCount = 5;
@@ -17,13 +20,32 @@ export class Page {
         this.gridRender = true;
     }
 
-
     set backgroundImg(img) {
         this._backgroundImg = img;
     }
 
     get controls() {
         return this._controls;
+    }
+
+    get selectControls() {
+        return this._selectControls;
+    }
+
+    get selectControl() {
+        return this._selectControl;
+    }
+
+    set selectControl(value) {
+        this._selectControl = value;
+    }
+
+    get hoverControl() {
+        return this._hoverControl;
+    }
+
+    set hoverControl(value) {
+        this._hoverControl = value;
     }
 
     get painter() {
@@ -49,8 +71,10 @@ export class Page {
     render() {
         this.renderBackground();
         this._controls.forEach(control => {
-            control.render(this.painter);
+            control.render(this.ctx);
         });
+        this.hoverControl?.render(this.ctx);
+        this.selectControl?.render(this.ctx);
     }
 
     captureRender() {

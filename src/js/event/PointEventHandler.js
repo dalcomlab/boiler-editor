@@ -18,10 +18,39 @@ export class PointEventHandler extends EventHandler {
 
     onMouseMove(e) {
         this.#setEvent(e);
+        const page = e.editor.page;
+        page.coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
+
+        const controls = page.controls;
+        for (const control of controls) {
+            const render = control.ptInHoverControl(e.point);
+            if (render !== null) {
+                page.hoverControl = render;
+                page.render();
+                return;
+            }
+        }
+
+        page.hoverControl = null;
     }
 
     onMouseUp(e) {
         this.#setEvent(e);
+
+        const page = e.editor.page;
+        page.coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
+
+        const controls = page.controls;
+        for (const control of controls) {
+            const render = control.ptInSelectControl(e.point);
+            if (render !== null) {
+                page.selectControl = render;
+                page.render();
+                return;
+            }
+        }
+
+        page.selectControl = null;
     }
 
     #setEvent(e) {

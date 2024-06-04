@@ -6,6 +6,12 @@ export class Event {
         this._point = {x: 0, y: 0};
         this._curPoint = {x: 0, y: 0};
         this._originEvent = null;
+
+        this._keyPressed = {};
+    }
+
+    get keyPressed() {
+        return this._keyPressed;
     }
 
     get editor() {

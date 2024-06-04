@@ -18,36 +18,6 @@ export class Painter {
         return this;
     }
 
-    drawPolygon(polygon) {
-        const points = polygon.points;
-
-        const ctx = this.ctx;
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-
-        for (let i = 1; i < points.length; ++i) {
-            const p = points[i];
-            ctx.lineTo(p.x, p.y);
-        }
-        const st = points[0];
-        ctx.lineTo(st.x, st.y);
-        ctx.closePath();
-
-        ctx.save();
-        ctx.lineWidth = polygon.lineWidth;
-
-        if (polygon.fillColor !== 'none') {
-            ctx.globalAlpha = polygon.opacity;
-            ctx.fillStyle = polygon.fillColor;
-            ctx.fill();
-        }
-
-        ctx.globalAlpha = 1;
-        ctx.strokeStyle = polygon.lineColor;
-        ctx.stroke();
-        ctx.restore();
-    }
-
     drawImage(img, x, y, w, h) {
         this.ctx.drawImage(img, x, y, w, h);
     }

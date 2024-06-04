@@ -4,12 +4,12 @@ export class UndoEventHandler extends EventHandler {
     constructor(undoManager) {
         super();
         this.manager = undoManager;
-        this.keysPredded = {};
     }
 
     onKeyDown(e) {
         const key = e.originEvent.key;
-        // this.keysPredded[key] = true;
+        console.log(key);
+        e.keyPressed[key] = true;
 
         if (key === 'z') {
             this.manager.undo();
@@ -19,6 +19,6 @@ export class UndoEventHandler extends EventHandler {
     }
 
     onKeyUp(e) {
-        delete this.keysPredded[e.originEvent.key];
+        delete e.keyPressed[e.originEvent.key];
     }
 }

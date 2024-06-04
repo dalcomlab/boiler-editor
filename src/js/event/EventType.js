@@ -5,4 +5,5 @@ export const EventType = {
     PAGE: 'page',
     MOUSE_POINT: 'mouse_point',
     POLYGON: 'polygon',
+    SELECT: 'select',
 }

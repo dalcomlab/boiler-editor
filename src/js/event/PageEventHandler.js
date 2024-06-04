@@ -15,14 +15,14 @@ export class PageEventHandler extends EventHandler {
     }
 
     onMouseMove(e) {
-        const page = e.editor.page;
-        const coordinate = page.coordinate;
-        coordinate.curPoint = {x: e.originEvent.offsetX, y: e.originEvent.offsetY};
         if (!e.down) {
             return;
         }
 
+        const page = e.editor.page;
+        const coordinate = page.coordinate;
         const downPoint = e.downPoint;
+
         const mx = e.point.x - downPoint.x;
         const my = e.point.y - downPoint.y;
 

@@ -46,6 +46,7 @@ export class CreatePolygonEventHandler extends EventHandler {
             e.editor.page.addControl(this.polygon);
             e.editor.removeForegroundRender();
             const polygon = this.polygon;
+            polygon.update();
             e.editor.undoManager.addUndo(new UndoItem(
                 () => {e.editor.page.removeControl(polygon)},
                 () => {e.editor.page.addControl(polygon)}));
